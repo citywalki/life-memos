@@ -1,5 +1,7 @@
 package app.backend.domain.user.persistence
 
+import app.backend.domain.user.UserDAO
+import app.backend.domain.user.UserQuery
 import model.user.Email
 import model.user.User
 import model.user.UserId
@@ -11,8 +13,6 @@ import org.komapper.core.dsl.operator.count
 import org.komapper.core.dsl.query.map
 import org.komapper.core.dsl.query.singleOrNull
 import org.komapper.r2dbc.R2dbcDatabase
-import app.backend.domain.user.UserDAO
-import app.backend.domain.user.UserQuery
 
 class UserDAOKomapper(
     private val db: R2dbcDatabase,

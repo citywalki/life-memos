@@ -1,7 +1,7 @@
 package model
 
-import model.user.UserId
 import kotlinx.serialization.Serializable
+import model.user.UserId
 
 @Serializable
 data class SystemSetting(

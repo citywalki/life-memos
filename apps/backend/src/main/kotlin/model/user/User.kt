@@ -2,10 +2,10 @@ package model.user
 
 import dev.whyoleg.cryptography.CryptographyProvider
 import dev.whyoleg.cryptography.algorithms.SHA512
-import model.RowStatus
 import kotlinx.datetime.LocalDateTime
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
+import model.RowStatus
 
 @Serializable
 enum class UserRole {

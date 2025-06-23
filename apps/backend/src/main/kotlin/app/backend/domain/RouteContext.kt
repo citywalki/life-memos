@@ -1,11 +1,10 @@
 package app.backend.domain
 
+import kotlinx.coroutines.ThreadContextElement
 import kotlin.coroutines.AbstractCoroutineContextElement
 import kotlin.coroutines.CoroutineContext
-import kotlinx.coroutines.ThreadContextElement
 
 public typealias BizContextMap = Map<String, String>?
-
 
 class RouteContext : ThreadContextElement<BizContextMap>, AbstractCoroutineContextElement(Key) {
 
@@ -18,5 +17,4 @@ class RouteContext : ThreadContextElement<BizContextMap>, AbstractCoroutineConte
     override fun updateThreadContext(context: CoroutineContext): BizContextMap {
         TODO("Not yet implemented")
     }
-
 }

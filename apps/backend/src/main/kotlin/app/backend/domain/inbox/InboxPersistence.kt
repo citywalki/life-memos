@@ -1,9 +1,9 @@
 package app.backend.domain.inbox
 
-import model.InboxMessage
-import model.InboxStatus
 import kotlinx.datetime.LocalDateTime
 import kotlinx.serialization.Serializable
+import model.InboxMessage
+import model.InboxStatus
 
 @Serializable
 data class Inbox(

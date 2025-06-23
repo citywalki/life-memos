@@ -1,10 +1,10 @@
 package app.backend.domain.memo
 
+import kotlinx.datetime.LocalDateTime
+import kotlinx.serialization.Serializable
 import model.MemosVisibility
 import model.RowStatus
 import model.TableId
-import kotlinx.datetime.LocalDateTime
-import kotlinx.serialization.Serializable
 
 @Serializable
 data class Memo(

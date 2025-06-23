@@ -1,7 +1,7 @@
 package model.user
 
-import model.TableId
 import kotlinx.serialization.Serializable
+import model.TableId
 
 @Serializable
 data class UserSetting(

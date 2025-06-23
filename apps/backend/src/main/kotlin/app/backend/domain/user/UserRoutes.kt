@@ -1,6 +1,5 @@
 package app.backend.domain.user
 
-import model.auth.UserSession
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.Application
 import io.ktor.server.auth.principal
@@ -13,12 +12,13 @@ import io.ktor.server.routing.route
 import io.ktor.server.routing.routing
 import io.ktor.server.sessions.get
 import io.ktor.server.sessions.sessions
-import kotlin.time.Duration.Companion.days
 import kotlinx.coroutines.slf4j.MDCContext
 import kotlinx.coroutines.withContext
 import kotlinx.datetime.Clock
+import model.auth.UserSession
 import org.komapper.r2dbc.R2dbcDatabase
 import org.slf4j.MDC
+import kotlin.time.Duration.Companion.days
 
 suspend fun Application.userRoutes(
     userQuery: UserQuery,
@@ -30,15 +30,15 @@ suspend fun Application.userRoutes(
                 val redirect = call.queryParameters["redirect"]
                 if (userSession == null) {
                     call.respondRedirect("/login" + if (redirect != null) "?redirect=$redirect" else "")
-                }else{
-                    //todo emailVerified
+                } else {
+                    // todo emailVerified
                     val userId = userSession.userId
 
                     val user = userQuery.findUser(userId)
                     if (user == null) {
                         call.respondRedirect("/login")
                     } else {
-                        if (userSession.expirationTime > Clock.System.now().minus(1.days)){
+                        if (userSession.expirationTime > Clock.System.now().minus(1.days)) {
                             call.respond(HttpStatusCode.OK, user)
                         }
                     }
@@ -50,21 +50,20 @@ suspend fun Application.userRoutes(
 
 suspend fun <R> RoutingContext.withBizContext(
     block: suspend () -> R,
-): R{
+): R {
     val userSession = call.principal<UserSession>()
     val database = call.application.dependencies.resolve<R2dbcDatabase>()
 
-   return if (userSession != null) {
+    return if (userSession != null) {
         MDC.put("userId", userSession.userId.value.toString())
-        withContext(MDCContext()){
+        withContext(MDCContext()) {
             database.withTransaction {
                 block()
             }
         }
-    }else{
+    } else {
         database.withTransaction {
             block()
         }
     }
-
 }

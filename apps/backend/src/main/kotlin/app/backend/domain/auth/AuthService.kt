@@ -1,5 +1,11 @@
 package app.backend.domain.auth
 
+import app.backend.domain.system.persistence.SystemSettingDAOFacade
+import app.backend.domain.user.UserDAO
+import app.backend.domain.user.UserQuery
+import app.backend.domain.user.persistence.create
+import app.backend.error.authMessages
+import app.backend.error.userMessages
 import model.RowStatus
 import model.user.HashedPassword
 import model.user.NickName
@@ -8,12 +14,6 @@ import model.user.UserId
 import model.user.UserName
 import model.user.UserRole
 import pro.walkin.logging.I18nMessages
-import app.backend.domain.system.persistence.SystemSettingDAOFacade
-import app.backend.domain.user.UserDAO
-import app.backend.domain.user.UserQuery
-import app.backend.domain.user.persistence.create
-import app.backend.error.authMessages
-import app.backend.error.userMessages
 
 class AuthService(
     private val userDAO: UserDAO,

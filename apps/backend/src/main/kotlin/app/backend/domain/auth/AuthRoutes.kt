@@ -1,8 +1,8 @@
 package app.backend.domain.auth
 
-import model.auth.UserSession
-import model.user.HashedPassword
-import model.user.UserName
+import app.backend.domain.user.UserQuery
+import app.backend.error.ArgumentVerificationException
+import app.backend.error.userMessages
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.Application
 import io.ktor.server.auth.authenticate
@@ -14,11 +14,11 @@ import io.ktor.server.routing.routing
 import io.ktor.server.sessions.sessions
 import io.ktor.server.sessions.set
 import kotlinx.serialization.Serializable
+import model.auth.UserSession
+import model.user.HashedPassword
+import model.user.UserName
 import org.komapper.r2dbc.R2dbcDatabase
 import pro.walkin.logging.I18nMessages
-import app.backend.domain.user.UserQuery
-import app.backend.error.ArgumentVerificationException
-import app.backend.error.userMessages
 
 @Serializable
 data class SignIn(val username: String, val password: String, val neverExpire: Boolean? = false)

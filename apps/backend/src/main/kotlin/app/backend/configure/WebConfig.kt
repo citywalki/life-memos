@@ -1,9 +1,6 @@
 package app.backend.configure
 
-import model.ArgumentErrorMessage
-import model.ErrorResponse
-import model.ErrorResponse.ErrorResponseCode.FIELD_ERROR
-import model.auth.UserSession
+import app.backend.error.ArgumentVerificationException
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpStatusCode
 import io.ktor.serialization.kotlinx.json.json
@@ -25,9 +22,11 @@ import io.ktor.server.routing.routing
 import io.ktor.server.sessions.SessionTransportTransformerEncrypt
 import io.ktor.server.sessions.Sessions
 import io.ktor.server.sessions.cookie
-import io.ktor.util.hex
 import kotlinx.datetime.Clock
-import app.backend.error.ArgumentVerificationException
+import model.ArgumentErrorMessage
+import model.ErrorResponse
+import model.ErrorResponse.ErrorResponseCode.FIELD_ERROR
+import model.auth.UserSession
 
 fun Application.configureWeb() {
     install(ContentNegotiation) {
@@ -52,7 +51,7 @@ fun Application.configureWeb() {
         cookie<UserSession>("user_session") {
             cookie.path = "/"
             cookie.maxAgeInSeconds = 7L * 24 * 3600 // 7 days
-            transform(SessionTransportTransformerEncrypt(secretEncryptKey,secretAuthKey))
+            transform(SessionTransportTransformerEncrypt(secretEncryptKey, secretAuthKey))
         }
     }
 

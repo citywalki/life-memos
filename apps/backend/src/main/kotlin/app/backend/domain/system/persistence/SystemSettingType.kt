@@ -1,15 +1,15 @@
 package app.backend.domain.system.persistence
 
-import model.SystemSetting
-import model.SystemSettingDetail
 import io.r2dbc.spi.Row
 import io.r2dbc.spi.Statement
 import kotlinx.serialization.json.Json
+import model.SystemSetting
+import model.SystemSettingDetail
 import org.komapper.r2dbc.spi.R2dbcUserDefinedDataType
 import kotlin.reflect.typeOf
 
 class SystemSettingType : R2dbcUserDefinedDataType<SystemSettingDetail> {
-    val jsonUtil = Json { }
+    val jsonUtil = Json
     override val name: String
         get() = "jsonb"
     override val type = typeOf<SystemSettingDetail>()
