@@ -1,0 +1,3 @@
+[submodule "library/logging-tools"]
+	path = library/logging-tools
+	url = git@github.com:citywalki/logging-tools-kt.git
