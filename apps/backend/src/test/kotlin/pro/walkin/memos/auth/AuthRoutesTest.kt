@@ -1,14 +1,11 @@
 package pro.walkin.memos.auth
 
-import app.backend.configure.configureWeb
-import app.backend.domain.auth.AuthService
-import app.backend.domain.auth.SignIn
-import app.backend.domain.auth.SignUp
-import app.backend.domain.auth.authRoutes
-import app.backend.domain.system.persistence.SystemSettingDAOFacade
-import app.backend.domain.user.UserDAO
-import app.backend.domain.user.UserQuery
-import app.backend.domain.user.persistence.create
+import app.backend.configure.configureController
+import app.backend.dao.def.create
+import app.backend.domain.user.SignIn
+import app.backend.domain.user.SignUp
+import app.backend.domain.user.authRoutes
+import app.backend.service.AuthService
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
@@ -38,17 +35,16 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class AuthRoutesTest {
+    private val db =
+        object : R2dbcDatabase by mockk(relaxed = true) {
+            private val operator = mockk<CoroutineTransactionOperator>(relaxed = true)
 
-    private val db = object : R2dbcDatabase by mockk(relaxed = true) {
-        private val operator = mockk<CoroutineTransactionOperator>(relaxed = true)
-        override suspend fun <R> withTransaction(
-            transactionAttribute: TransactionAttribute,
-            transactionProperty: TransactionProperty,
-            block: suspend (CoroutineTransactionOperator) -> R,
-        ): R {
-            return block(operator)
+            override suspend fun <R> withTransaction(
+                transactionAttribute: TransactionAttribute,
+                transactionProperty: TransactionProperty,
+                block: suspend (CoroutineTransactionOperator) -> R,
+            ): R = block(operator)
         }
-    }
 
     private val systemSettingDAOFacade = mockk<SystemSettingDAOFacade>(relaxed = true)
 
@@ -56,74 +52,79 @@ class AuthRoutesTest {
 
     private val userQuery = mockk<UserQuery>(relaxed = true)
 
-    fun ApplicationTestBuilder.client() = createClient {
-        install(ContentNegotiation) {
-            json()
-        }
-    }
-
-    @Test
-    fun testSignin() = testApplication {
-        setupApp()
-
-        val client = client()
-        client.post("/api/auth/signin") {
-            contentType(ContentType.Application.Json)
-            setBody(
-                SignIn(
-                    username = "username",
-                    password = "password",
-                )
-            )
-        }.apply {
-            assertEquals(HttpStatusCode.OK, status)
-        }
-    }
-
-    @Test
-    fun testSignup() = testApplication {
-        setupApp()
-
-        coEvery { systemSettingDAOFacade.findGeneralSystemSetting() } returns GeneralSystemSettingDetail()
-        coEvery { userQuery.countUser(UserRole.HOST) } returns 0
-
-        val client = client()
-        client.post("/api/auth/signup") {
-            contentType(ContentType.Application.Json)
-            setBody(
-                SignUp(
-                    username = "username",
-                    password = "password",
-                )
-            )
-        }.apply {
-            coVerify {
-                userDAO.insertUser(
-                    User(
-                        id = UserId.create(),
-                        username = UserName.from("username"),
-                        hashedPassword = HashedPassword.from("password"),
-                        role = UserRole.HOST,
-                        nickname = NickName("username"),
-                    )
-                )
+    fun ApplicationTestBuilder.client() =
+        createClient {
+            install(ContentNegotiation) {
+                json()
             }
-            assertEquals(HttpStatusCode.OK, status)
         }
+
+    @Test
+    fun testSignin() =
+        testApplication {
+            setupApp()
+
+            val client = client()
+            client
+                .post("/api/auth/signin") {
+                    contentType(ContentType.Application.Json)
+                    setBody(
+                        SignIn(
+                            username = "username",
+                            password = "password",
+                        ),
+                    )
+                }.apply {
+                    assertEquals(HttpStatusCode.OK, status)
+                }
+        }
+
+    @Test
+    fun testSignup() =
+        testApplication {
+            setupApp()
+
+            coEvery { systemSettingDAOFacade.findGeneralSystemSetting() } returns GeneralSystemSettingDetail()
+            coEvery { userQuery.countUser(UserRole.HOST) } returns 0
+
+            val client = client()
+            client
+                .post("/api/auth/signup") {
+                    contentType(ContentType.Application.Json)
+                    setBody(
+                        SignUp(
+                            username = "username",
+                            password = "password",
+                        ),
+                    )
+                }.apply {
+                    coVerify {
+                        userDAO.insertUser(
+                            User(
+                                id = UserId.create(),
+                                username = UserName.from("username"),
+                                hashedPassword = HashedPassword.from("password"),
+                                role = UserRole.HOST,
+                                nickname = NickName("username"),
+                            ),
+                        )
+                    }
+                    assertEquals(HttpStatusCode.OK, status)
+                }
 
 //        confirmVerified(userDAOFacade, systemSettingDAOFacade)
-    }
+        }
 
     private fun ApplicationTestBuilder.setupApp() {
         application {
-            configureWeb()
+            configureController()
             dependencies {
                 provide { db }
             }
             authRoutes(
                 authService = AuthService(userDAO, userQuery, systemSettingDAOFacade),
                 database = db,
-                userQuery = userQuery
+                userQuery = userQuery,
             )
         }
         environment {

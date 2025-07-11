@@ -1,0 +1,29 @@
+type Query{
+    users: [User]
+    user(userId: String, username: String): User
+#    userChannel(userChannelId: String, userChannelName: String): UserChannel
+}
+
+type Mutation{
+    signin(username: String,password: String):SigninResponse
+}
+
+scalar LocalDateTime
+
+interface Response{
+    success: Boolean!
+    message: String!
+}
+
+"""数据状态"""
+enum RowStatus {
+    ARCHIVED
+    NORMAL
+}
+
+
+
+
+
+
+

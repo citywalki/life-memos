@@ -1,20 +1,16 @@
 package app.backend.domain
 
-import kotlinx.coroutines.ThreadContextElement
-import kotlin.coroutines.AbstractCoroutineContextElement
-import kotlin.coroutines.CoroutineContext
-
-public typealias BizContextMap = Map<String, String>?
-
-class RouteContext : ThreadContextElement<BizContextMap>, AbstractCoroutineContextElement(Key) {
-
-    public companion object Key : CoroutineContext.Key<RouteContext>
-
-    override fun restoreThreadContext(context: CoroutineContext, oldState: BizContextMap) {
-        TODO("Not yet implemented")
-    }
-
-    override fun updateThreadContext(context: CoroutineContext): BizContextMap {
-        TODO("Not yet implemented")
-    }
-}
+// public typealias BizContextMap = Map<String, String>?
+//
+// class RouteContext : ThreadContextElement<BizContextMap>, AbstractCoroutineContextElement(Key) {
+//
+//    public companion object Key : CoroutineContext.Key<RouteContext>
+//
+//    override fun restoreThreadContext(context: CoroutineContext, oldState: BizContextMap) {
+//        TODO("Not yet implemented")
+//    }
+//
+//    override fun updateThreadContext(context: CoroutineContext): BizContextMap {
+//        TODO("Not yet implemented")
+//    }
+// }

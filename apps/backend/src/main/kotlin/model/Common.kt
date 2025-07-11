@@ -11,7 +11,7 @@ enum class RowStatus {
     ARCHIVED,
 }
 
-typealias TableId = Long
+typealias TableId = String
 
 typealias PageToken = String
 
@@ -33,8 +33,8 @@ data class PageTokenPayload(val limit: Int, val offset: Int) {
 
 @Serializable
 data class ArgumentErrorMessage(
-    private val field: String,
-    private val message: String?,
+    val field: String,
+    val message: String?,
 )
 
 @Serializable

@@ -7,24 +7,27 @@ plugins {
 
 val isDevelopment: Boolean = project.ext.has("development")
 application {
-    mainClass = "io.ktor.server.cio.EngineMain"
-    applicationDefaultJvmArgs = listOf("-Dio.ktor.development=$isDevelopment")
+    mainClass = "io.ktor.server.netty.EngineMain"
+    applicationDefaultJvmArgs = listOf("-Dio.ktor.development=false")
 }
 
 dependencies {
     ksp(libs.komapper.processor)
     ksp("pro.walkin.logging:processor")
 
-    implementation(libs.komapper.starter.r2dbc)
-    implementation(libs.komapper.dialect.postgresql.r2dbc)
+    implementation("pro.walkin.shared:datetime-jackson")
+//    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
+//    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.19.+")
+    implementation(libs.ktor.serialization.kotlinx.json)
+    implementation(libs.komapper.starter)
+    implementation(libs.komapper.dialect.postgresql)
     implementation(libs.cryptography.jdk)
-
+    implementation(libs.hikaricp)
     implementation("pro.walkin.logging:core")
     implementation("pro.walkin.shared:shared-utils")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-slf4j")
+    implementation(libs.kotlinx.coroutines.slf4j)
     implementation(libs.ktor.server.di)
     implementation(libs.ktor.server.core)
-    implementation(libs.ktor.serialization.kotlinx.json)
     implementation(libs.ktor.server.content.negotiation)
     implementation(libs.ktor.server.call.logging)
     implementation(libs.ktor.server.call.id)
@@ -33,7 +36,7 @@ dependencies {
     implementation(libs.ktor.server.swagger)
     implementation(libs.ktor.server.statusPages)
     implementation(libs.ktor.server.openapi)
-    implementation(libs.ktor.server.cio)
+    implementation(libs.ktor.server.netty)
     implementation(libs.logback.classic)
 
     if (isDevelopment) {
@@ -44,7 +47,7 @@ dependencies {
     testImplementation(kotlin("test"))
     testImplementation(libs.ktor.server.test.host)
 //    testImplementation(libs.kotlin.test.junit)
-    testImplementation(libs.komapper.dialect.h2.r2dbc)
+    testImplementation(libs.komapper.dialect.h2)
     testImplementation(libs.ktor.client.content.negotiation)
 //    testImplementation(libs.testcontainers.postgres)
     testImplementation("org.testcontainers:junit-jupiter:1.21.1")

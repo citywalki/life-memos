@@ -1,0 +1,48 @@
+type User {
+    avatarUrl: String
+    createdAt: LocalDateTime
+    email: String
+    followChannels(limit: Int): [UserFollowChannel!]!
+    hostChannels(limit: Int): [UserChannel!]!
+    uid: String!
+    nickname: String!
+    role: UserRole!
+    status: RowStatus!
+    updatedAt: LocalDateTime
+    username: String!
+    version: Int!
+}
+
+
+"""User channels"""
+type UserChannel {
+    description: String
+    isDefaultChannel: Boolean!
+    name: String!
+    ownerUser: String!
+    rowStatus: RowStatus
+    uid: String!
+}
+
+type UserFollowChannel {
+    channelId: String!
+    channelOwner: String!
+    followStartAt: LocalDateTime!
+    uid: String!
+    userId: String!
+}
+
+"""用户角色"""
+enum UserRole {
+    ADMIN
+    HOST
+    ROLE_UNSPECIFIED
+    USER
+}
+
+type SigninResponse implements Response{
+    message: String!
+    success: Boolean!
+    accessToken: String!
+    refreshToken: String!
+}

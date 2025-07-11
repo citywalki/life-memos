@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+import "google/protobuf/empty.proto";
+
+service Auth {
+  rpc Signin (SigninRequest) returns (SigninReply);
+  rpc Signup(SignupRequest) returns (SignupReply);
+  rpc Signout(google.protobuf.Empty) returns (google.protobuf.Empty);
+}
+
+service User {
+}
+
+message SigninRequest {
+  string name = 1;
+  string password = 2;
+}
+
+message SigninReply {
+  string accessToken = 1;
+  string refreshToken = 2;
+}
+
+message SignupRequest {
+  string name = 1;
+  string password = 2;
+}
+
+message SignupReply {
+  string accessToken = 1;
+  string refreshToken = 2;
+}

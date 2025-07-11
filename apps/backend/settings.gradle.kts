@@ -15,3 +15,5 @@ rootProject.name = "backend"
 
 includeBuild("../../logging-tools")
 includeBuild("../../shared")
+// includeBuild("../../kgraphql")
+// includeBuild("../../kotlinx-datetime-jackson")

@@ -1,52 +1,138 @@
 openapi: "3.1.0"
 info:
-  title: "spring_mono API"
-  description: "spring_mono API"
+  title: "apps API"
+  description: "apps API"
   version: "1.0.0"
 servers:
   - url: "http://127.0.0.1:8443"
 paths:
-  /api/auth/signOut:
-    post:
-      description: ""
   /api/auth/signin:
     post:
       description: ""
       requestBody:
         content:
-          '*/*':
+          application/json:
             schema:
-              $ref: "#/components/schemas/SignIn"
+              $ref: "#/components/schemas/Signin"
         required: true
       responses:
-        "302":
-          description: "Found <br> call.respond(HttpStatusCode.OK, buildJwtTokens(signedUser))"
+        "500":
+          description: "Internal Server Error"
           content:
-            text/plain:
+            '*/*':
               schema:
-                type: "string"
+                $ref: "#/components/schemas/ErrorResponse"
               examples:
                 Example#1:
-                  value: "/"
-  /api/auth/signup:
-    post:
-      description: ""
-      requestBody:
-        content:
-          '*/*':
-            schema:
-              $ref: "#/components/schemas/SignUp"
-        required: true
-      responses:
+                  description: ""
+                  value:
+                    code: 1
+                    message: "null"
+                    fields: "null"
+                Example#2:
+                  description: ""
+                  value:
+                    code: 1000
+                    message: "null"
+                    fields: [ ]
+                Example#3:
+                  description: ""
+                  value:
+                    code: 1
+                    message: "null"
+                    fields: "null"
+                Example#4:
+                  description: ""
+                  value:
+                    code: 1000
+                    message: "null"
+                    fields: [ ]
+                Example#5:
+                  description: ""
+                  value:
+                    code: 1
+                    message: "null"
+                    fields: "null"
+                Example#6:
+                  description: ""
+                  value:
+                    code: 1000
+                    message: "null"
+                    fields: [ ]
+                Example#7:
+                  description: ""
+                  value:
+                    code: 1
+                    message: "null"
+                    fields: "null"
+                Example#8:
+                  description: ""
+                  value:
+                    code: 1000
+                    message: "null"
+                    fields: [ ]
+                Example#9:
+                  description: ""
+                  value:
+                    code: 1
+                    message: "null"
+                    fields: "null"
+                Example#10:
+                  description: ""
+                  value:
+                    code: 1000
+                    message: "null"
+                    fields: [ ]
         "200":
           description: "OK"
           content:
             '*/*':
               schema:
-                $ref: "#/components/schemas/AuthTokens"
-  /api/user/me:
+                type: "object"
+  /api/auth/signup:
+    post:
+      description: ""
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SignUp"
+        required: true
+      responses:
+        "500":
+          description: "Internal Server Error"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              examples:
+                Example#1:
+                  description: ""
+                  value:
+                    code: 1
+                    message: "null"
+                    fields: "null"
+                Example#2:
+                  description: ""
+                  value:
+                    code: 1000
+                    message: "null"
+                    fields: [ ]
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "object"
+  /api/me:
     get:
       description: ""
+      parameters:
+        - name: "redirect"
+          in: "query"
+          required: false
+          schema:
+            type: "string"
       responses:
         "302":
           description: "Found <br> Redirect"
@@ -63,9 +149,93 @@ paths:
             '*/*':
               schema:
                 $ref: "#/components/schemas/User"
+  /api/user:
+    get:
+      description: ""
+      parameters:
+        - name: "username"
+          in: "query"
+          required: false
+          schema:
+            type: "string"
+        - name: "userId"
+          in: "query"
+          required: false
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/User"
+  /api/user/channels:
+    get:
+      description: ""
+      parameters:
+        - name: "username"
+          in: "query"
+          required: false
+          schema:
+            type: "string"
+        - name: "userId"
+          in: "query"
+          required: false
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/UserChannel"
+  /api/channels:
+    get:
+      description: ""
+      parameters:
+        - name: "userChannelId"
+          in: "query"
+          required: false
+          schema:
+            type: "number"
+        - name: "userChannelName"
+          in: "query"
+          required: false
+          schema:
+            type: "string"
 components:
   schemas:
-    SignIn:
+    ArgumentErrorMessage:
+      type: "object"
+      properties:
+        field:
+          type: "string"
+        message:
+          type: "string"
+          nullable: true
+      required:
+        - "field"
+    ErrorResponse:
+      type: "object"
+      properties:
+        code:
+          type: "integer"
+          format: "int32"
+        message:
+          type: "string"
+          nullable: true
+        fields:
+          type: "array"
+          nullable: true
+          items:
+            $ref: "#/components/schemas/ArgumentErrorMessage"
+      required:
+        - "code"
+    Signin:
       type: "object"
       properties:
         username:
@@ -88,9 +258,6 @@ components:
       required:
         - "username"
         - "password"
-    AuthTokens:
-      type: "object"
-      properties: { }
     User:
       type: "object"
       properties:
@@ -101,22 +268,8 @@ components:
           type: "integer"
           format: "int32"
           default: "0"
-        createdAt:
-          type: "string"
-          format: "date-time"
-          nullable: true
-        updatedAt:
-          type: "string"
-          format: "date-time"
-          nullable: true
         username:
           type: "string"
-        hashedPassword:
-          type: "array"
-          nullable: true
-          items:
-            type: "string"
-            format: "byte"
         status:
           type: "string"
           enum:
@@ -144,3 +297,30 @@ components:
         - "status"
         - "role"
         - "nickname"
+    UserChannel:
+      type: "object"
+      properties:
+        uid:
+          type: "integer"
+          format: "int64"
+        ownerUser:
+          type: "integer"
+          format: "int64"
+        description:
+          type: "string"
+          nullable: true
+        rowStatus:
+          type: "string"
+          nullable: true
+          enum:
+            - "NORMAL"
+            - "ARCHIVED"
+        name:
+          type: "string"
+        isDefaultChannel:
+          type: "boolean"
+      required:
+        - "uid"
+        - "ownerUser"
+        - "name"
+        - "isDefaultChannel"

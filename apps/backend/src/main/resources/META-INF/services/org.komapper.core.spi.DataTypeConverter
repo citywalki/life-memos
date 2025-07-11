@@ -1,0 +1,5 @@
+app.backend.dao.type.UserNameType
+app.backend.dao.type.HashedPasswordType
+app.backend.dao.type.UserIdType
+app.backend.dao.type.UserChannelIdType
+app.backend.dao.type.UserFollowChannelIdType

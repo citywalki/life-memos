@@ -1,0 +1,32 @@
+[versions]
+java-compile-toolchain = "21"
+jvm-target = "21"
+komapper = "5.4.0"
+kotlin = "2.2.0"
+kotlinx-serialization = "1.8.1"
+ksp = "2.2.0-2.0.2"
+detekt-version = "1.23.8"
+testcontainers-version = "1.21.1"
+
+[plugins]
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+graalvm-buildtools-native = { id = "org.graalvm.buildtools.native", version = "0.10.6" }
+
+[libraries]
+detektGradlePlugin = { module = "io.gitlab.arturbosch.detekt:detekt-gradle-plugin", version.ref = "detekt-version" }
+komapper-dialect-postgresql = { module = "org.komapper:komapper-dialect-postgresql-r2dbc", version.ref = "komapper" }
+komapper-processor = { module = "org.komapper:komapper-processor", version.ref = "komapper" }
+komapper-starter = { module = "org.komapper:komapper-starter-r2dbc", version.ref = "komapper" }
+komapper-spring-starter = { module = "org.komapper:komapper-spring-boot-starter-r2dbc", version.ref = "komapper" }
+
+kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version = "0.6.1" }
+kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
+kotlinx-coroutines-slf4j = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-slf4j" }
+testcontainers-postgres = { module = "org.testcontainers:postgresql", version.ref = "testcontainers-version" }
+
+hikaricp = { module = "com.zaxxer:HikariCP", version = "6.3.0" }
+springdoc = { module = "org.springdoc:springdoc-openapi-starter-webflux-ui", version = "2.8.9" }
+
+[bundles]

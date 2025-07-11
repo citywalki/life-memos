@@ -1,25 +1,25 @@
-import { paraglideVitePlugin } from '@inlang/paraglide-js';
 import tailwindcss from '@tailwindcss/vite';
 import { sveltekit } from '@sveltejs/kit/vite';
 import { defineConfig } from 'vite';
+import houdini from 'houdini/vite';
+import devtoolsJson from 'vite-plugin-devtools-json';
 
 export default defineConfig({
-	plugins: [
-		paraglideVitePlugin({
-			project: './project.inlang',
-			outdir: './src/lib/paraglide',
-			strategy: ['url', 'cookie', 'baseLocale']
-		}),
-		tailwindcss(),
-		sveltekit()
-	],
+	plugins: [devtoolsJson(), sveltekit(), tailwindcss()],
 	server: {
 		port: 8442,
-		proxy:{
+		proxy: {
 			'/api': {
 				target: 'http://127.0.0.1:8443',
-				changeOrigin: true,
+				changeOrigin: true
 			},
+			'/graphql': {
+				target: 'http://127.0.0.1:8443',
+				changeOrigin: true
+			}
 		}
+	},
+	esbuild: {
+		target: 'es2022'
 	}
 });

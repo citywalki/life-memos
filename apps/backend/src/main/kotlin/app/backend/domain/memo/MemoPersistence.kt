@@ -8,7 +8,7 @@ import model.TableId
 
 @Serializable
 data class Memo(
-    val uid: TableId = 0,
+    val uid: TableId,
     var rowStatus: RowStatus? = RowStatus.NORMAL,
     var creator: TableId,
     var content: String,

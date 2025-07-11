@@ -1,0 +1,66 @@
+scalar LocalDateTime
+
+"""
+The Long scalar type represents a signed 64-bit numeric non-fractional value
+"""
+scalar Long
+
+"""Query object"""
+type Query {
+  """返回当前权限用户"""
+  me: User
+  user(userId: String, username: String): User
+  userChannel(userChannelId: Long, userChannelName: String): UserChannel
+}
+
+"""数据状态"""
+enum RowStatus {
+  ARCHIVED
+  NORMAL
+}
+
+"""
+The Short scalar type represents a signed 16-bit numeric non-fractional value
+"""
+scalar Short
+
+type User {
+  avatarUrl: String
+  createdAt: LocalDateTime
+  email: String
+  followChannels(limit: Int): [UserFollowChannel!]!
+  hostChannels(limit: Int): [UserChannel!]!
+  id: Long!
+  nickname: String!
+  role: UserRole!
+  status: RowStatus!
+  updatedAt: LocalDateTime
+  username: String!
+  version: Int!
+}
+
+"""User channels"""
+type UserChannel {
+  description: String
+  isDefaultChannel: Boolean!
+  name: String!
+  ownerUser: Long!
+  rowStatus: RowStatus
+  uid: Long!
+}
+
+type UserFollowChannel {
+  channelId: Long!
+  channelOwner: Long!
+  followStartAt: LocalDateTime!
+  uid: Long!
+  userId: Long!
+}
+
+"""用户角色"""
+enum UserRole {
+  ADMIN
+  HOST
+  ROLE_UNSPECIFIED
+  USER
+}

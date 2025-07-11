@@ -1,0 +1,16 @@
+query GetWorkspaceInfo($userId: String!){
+    user(userId: $userId){
+        username
+        status
+        role
+        hostChannels {
+            uid
+            name
+            isDefaultChannel
+        }
+        followChannels{
+            uid
+            channelId
+        }
+    }
+}

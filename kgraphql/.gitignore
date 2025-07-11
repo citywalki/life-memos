@@ -1,0 +1,12 @@
+# Kotlin sessions
+.kotlin
+
+# IntelliJ project files
+*.iml
+.idea/
+
+# Gradle
+.gradle
+build/
+
+docs/out

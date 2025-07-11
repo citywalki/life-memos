@@ -1,0 +1,12 @@
+query GetUserChannelInfo($username: String) {
+    user(username: $username){
+        avatarUrl
+        nickname
+    }
+
+    userChannel{
+        name
+        description
+    }
+
+}
